@@ -18,32 +18,29 @@ image_accept = False
 async def language(msg: Message):
     if(msg.from_user.id == admin_id):
       await msg.answer("welcome admin!")
-
-    text = "Выберите язык / Tilni tanlang / Тилни танланг:"
-    await msg.answer(text, reply_markup=keyboard.langs)
+    else:
+        text = "Выберите язык / Tilni tanlang / Тилни танланг:"
+        await msg.answer(text, reply_markup=keyboard.langs)
 
 
 @dp.message_handler()
 async def menus(msg: Message):
-    if(msg.from_user.id == admin_id):
-        lst = msg.text.split("_")
-        await bot.send_message(int(lst[0]), lst[1])
-
-
-
-    # Here need to declare database object
     global user_lang
     global waiting_for_question
     global image_accept
 
-    if msg.text in ['🇷🇺 RU', '🇺🇿 UZB', '🇺🇿 УЗБ']:
-        res = keyboard.options_after_lang(msg.text)
+    if(msg.from_user.id == admin_id):
+        lst = msg.text.split("_")
+        await bot.send_message(int(lst[0]), lst[1])
 
+    # Here need to declare database object
+    
+
+    elif msg.text in ['🇷🇺 RU', '🇺🇿 UZB', '🇺🇿 УЗБ']:
+        res = keyboard.options_after_lang(msg.text)
         # Need to save it to database
         user_lang = msg.text
-
        
-
         await msg.answer(
             res[0],  # Text
             reply_markup=res[1]  # KeyboardMarkup
@@ -68,6 +65,11 @@ async def menus(msg: Message):
 
         await msg.answer(text, reply_markup=keyboard.langs)
 
+    # How get
+    elif msg.text in list(material.how_to_get_dct.values()):
+        text = material.how_get[user_lang]
+        await msg.answer(text)
+
     # User asking Question
     elif msg.text in list(material.ask_question_dct.values()):
         text = material.reply_for_question.get(user_lang)
@@ -79,7 +81,8 @@ async def menus(msg: Message):
     else:
         if waiting_for_question:
             await bot.send_message(admin_id,f"user_id = {msg.from_user.id}\nquestion = {msg.text}")
-            # Need to update from Database                      
+            # Need to update from Database
+            await msg.answer(material.answer_for_question[user_lang], reply_markup= keyboard.options_after_lang(user_lang)[1])                      
             waiting_for_question = False
         print("This is ask option")
 
