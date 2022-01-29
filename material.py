@@ -71,3 +71,21 @@ check_payment = {
     '🇺🇿 UZB': "screenshot rasmini yoinki chekn rasmini tashlang",
     '🇺🇿 УЗБ': 'screenshot rasmini yoinki chekn rasmini tashlang'
 }
+
+how_get = {
+    '🇷🇺 RU':  """9860 0401 0436 1247 humo
+4023 0601 4177 8182 visa 
+8600 1309 8931 4168 uzcard""",
+    '🇺🇿 UZB': """9860 0401 0436 1247 humo
+4023 0601 4177 8182 visa 
+8600 1309 8931 4168 uzcard""",
+    '🇺🇿 УЗБ': """9860 0401 0436 1247 humo
+4023 0601 4177 8182 visa 
+8600 1309 8931 4168 uzcard"""
+}
+
+answer_for_question = {
+    '🇷🇺 RU':  'спасибо за вопрос, мы в ближайшие времья ответим вам)',
+    '🇺🇿 UZB': "savolingiz uchun rahmat, biz sizga yaqin vaxtda javb beramz",
+    '🇺🇿 УЗБ': 'savolingiz uchun rahmat, biz sizga yaqin vaxtda javb beramz'
+}
