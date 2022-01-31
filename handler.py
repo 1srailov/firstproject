@@ -1,24 +1,32 @@
-from email.mime import image
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram import executor
 
 import material
+
 from bot import *
 
 import keyboard
 
-from databse import *
-dt = Database()
+from Users import *
+
+
 # Need to change to database!
 user_lang = '🇷🇺 RU'
 waiting_for_question = False
 image_accept = False
+user_referal = 'https://telegram.me/{}?start={}'
 
 @dp.message_handler(commands=["start"])
 async def language(msg: Message):
     if(msg.from_user.id == admin_id):
       await msg.answer("welcome admin!")
     else:
+        user_id = msg.from_user.id
+        splited = msg.text.split()
+        if not Users.user_exists(user_id):
+            Users.create_user(user_id)
+            if len(splited) == 2:
+                Users.increase_ref_count(splited[1])
         text = "Выберите язык / Tilni tanlang / Тилни танланг:"
         await msg.answer(text, reply_markup=keyboard.langs)
 
@@ -28,6 +36,7 @@ async def menus(msg: Message):
     global user_lang
     global waiting_for_question
     global image_accept
+    global user_referal
 
     if(msg.from_user.id == admin_id):
         lst = msg.text.split("_")
@@ -69,6 +78,16 @@ async def menus(msg: Message):
     elif msg.text in list(material.how_to_get_dct.values()):
         text = material.how_get[user_lang]
         await msg.answer(text)
+
+    #referal
+    elif msg.text in list(material.groups_for_invite_dct.values()):
+        text = material.answer_for_referal[user_lang]
+        await msg.answer(text)
+        text= user_referal.format(msg.from_user.username, msg.from_user.id)
+        await msg.reply(text)
+
+        count = Users.get_ref_count(msg.from_user.id)
+        await msg.reply(text=f'Count: {count}')
 
     # User asking Question
     elif msg.text in list(material.ask_question_dct.values()):
