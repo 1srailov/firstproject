@@ -83,7 +83,7 @@ async def menus(msg: Message):
     elif msg.text in list(material.groups_for_invite_dct.values()):
         text = material.answer_for_referal[user_lang]
         await msg.answer(text)
-        text= user_referal.format(msg.from_user.username, msg.from_user.id)
+        text= user_referal.format('sng_logistic_bot', msg.from_user.id)
         await msg.reply(text)
 
         count = Users.get_ref_count(msg.from_user.id)
